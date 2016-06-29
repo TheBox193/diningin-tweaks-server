@@ -1,0 +1,19 @@
+{
+  "name": "diningin-tweaks-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "cors": "^2.7.1",
+    "express": "^4.13.4",
+    "lodash": "^4.12.0",
+    "nedb": "^1.8.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jonathan Stassen",
+  "license": "ISC"
+}
