@@ -24,9 +24,9 @@ app.use(function(req, res, next) {
 
 app.options('*', cors());
 
-// app.get('/', function(req, res){
-//   res.send('Hello World');
-// });
+app.get('/', function(req, res){
+  res.send('Bees, bees, beeeeeeees!!!!');
+});
 
 app.post('/item/new', function(req, res){
   var body = req.body;
@@ -70,6 +70,22 @@ app.get('/rest/:id', function(req, res){
   });
 });
 
- // var server = app.listen(3000, function(){
- //   console.log('Magic is happening on port 3000')
- // });
+app.get('/averages', function(req, res){
+	var averages = JSON.parse(fs.readFileSync('./averages.json', 'utf8'));
+	res.json(averages);
+});
+
+app.get('/averages/:id', function(req, res){
+  var id = parseInt(req.params.id);
+  var averages = JSON.parse(fs.readFileSync('./averages.json', 'utf8'));
+  if (averages[id]){
+    res.send(averages[id]);
+  } else {
+    res.status(500).send();
+  }
+});
+
+const port = 3000;
+var server = app.listen(port, function(){
+  console.log(`Magic is happening on port ${port}`)
+});
