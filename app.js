@@ -70,14 +70,17 @@ app.get('/rest/:id', function(req, res){
   });
 });
 
+// This file is maintained by a script running via a cronjob
+const averagesFileLocation = '/home/time/diningin-time-tracker/averages.json';
+
 app.get('/averages', function(req, res){
-	var averages = JSON.parse(fs.readFileSync('./averages.json', 'utf8'));
+	var averages = JSON.parse(fs.readFileSync(averagesFileLocation, 'utf8'));
 	res.json(averages);
 });
 
 app.get('/averages/:id', function(req, res){
   var id = parseInt(req.params.id);
-  var averages = JSON.parse(fs.readFileSync('./averages.json', 'utf8'));
+  var averages = JSON.parse(fs.readFileSync(averagesFileLocation, 'utf8'));
   if (averages[id]){
     res.send(averages[id]);
   } else {
