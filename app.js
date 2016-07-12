@@ -25,7 +25,7 @@ app.use(function(req, res, next) {
 app.options('*', cors());
 
 app.get('/', function(req, res){
-  res.send('Bees, bees, beeeeeeees!!!!');
+  res.send('So much to see, so much to eat');
 });
 
 app.post('/item/new', function(req, res){
@@ -85,7 +85,7 @@ app.get('/averages/:id', function(req, res){
   }
 });
 
-// const port = 3000;
-// var server = app.listen(port, function(){
-//   console.log(`Magic is happening on port ${port}`)
-// });
+const port = 3000;
+var server = app.listen(port, function(){
+  console.log(`Magic is happening on port ${port}`)
+});
