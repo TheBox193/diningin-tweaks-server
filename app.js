@@ -85,7 +85,7 @@ app.get('/averages/:id', function(req, res){
   }
 });
 
-const port = 3000;
-var server = app.listen(port, function(){
-  console.log(`Magic is happening on port ${port}`)
-});
+// const port = 3000;
+// var server = app.listen(port, function(){
+//   console.log(`Magic is happening on port ${port}`)
+// });
