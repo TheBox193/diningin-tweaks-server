@@ -25,7 +25,7 @@ app.use(function(req, res, next) {
 app.options('*', cors());
 
 app.get('/', function(req, res){
-  res.send('Bees, bees, beeeeeeees!!!!');
+  res.send('So much to see, so much to eat');
 });
 
 app.post('/item/new', function(req, res){
@@ -70,14 +70,17 @@ app.get('/rest/:id', function(req, res){
   });
 });
 
+// This file is maintained by a script running via a cronjob
+const averagesFileLocation = '/home/time/diningin-time-tracker/averages.json';
+
 app.get('/averages', function(req, res){
-	var averages = JSON.parse(fs.readFileSync('./averages.json', 'utf8'));
+	var averages = JSON.parse(fs.readFileSync(averagesFileLocation, 'utf8'));
 	res.json(averages);
 });
 
 app.get('/averages/:id', function(req, res){
   var id = parseInt(req.params.id);
-  var averages = JSON.parse(fs.readFileSync('./averages.json', 'utf8'));
+  var averages = JSON.parse(fs.readFileSync(averagesFileLocation, 'utf8'));
   if (averages[id]){
     res.send(averages[id]);
   } else {
@@ -85,7 +88,7 @@ app.get('/averages/:id', function(req, res){
   }
 });
 
-// const port = 3000;
-// var server = app.listen(port, function(){
-//   console.log(`Magic is happening on port ${port}`)
-// });
+const port = 3000;
+var server = app.listen(port, function(){
+  console.log(`Magic is happening on port ${port}`)
+});
