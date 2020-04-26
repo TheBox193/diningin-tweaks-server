@@ -1,4 +1,5 @@
 var fs = require('fs');
+var morgan = require('morgan');
 var express = require('express');
 var https = require('https');
 var cors = require('cors');
@@ -14,6 +15,7 @@ var options = {
 };
 var secureServer = https.createServer(options, app).listen(443);
 
+app.use(morgan('combined'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(function(req, res, next) {
@@ -28,66 +30,31 @@ app.get('/', function(req, res){
   res.send('So much to see, so much to eat');
 });
 
-app.post('/item/new', function(req, res){
-  var body = req.body;
-  var user = body.user;
-  var item = body.item;
-  var rest = body.rest;
-  console.log('Item :', body);
-
-  if (!user || !item || !rest) {
-    res.send('Need user + rest + item');
-    return;
-  }
-
-  var searchObj = { 'rest': rest, 'item': item, 'user': user };
-  db.find(searchObj, function(err, foundDoc) {
-
-    var doc = _.pickBy({'item':item, vote:body.vote, rest:rest, user:user, comt:body.comment});
-    var foundObj = _.pickBy(foundDoc[0]);
-
-    if (foundDoc.length === 0) {
-      console.log('Entry saved');
-      db.insert(doc, function( err, newDoc) {
-        res.json(newDoc);
-      });
-    } else {
-      var updateObj = Object.assign({}, foundObj, doc);
-      db.update(searchObj, updateObj, {}, function (err, numReplaced) {
-        console.log('Entry updated');
-        db.find(searchObj, function(err, updatedDoc) {
-          res.json(updatedDoc[0]);
-        });
-
-      });
-    }
-  })
+app.post('/smartsocial/', function(req, res){
+   var danceType =  _.get(req, 'body.request.intent.slots.TypeOfDance.value');
+console.log(req.body);
+    res.json({
+      'version': '1.0',
+      'response': {
+        'outputSpeech': {
+          'type': 'PlainText',
+          'text': 'I\'m  dancing! Look at me go!'
+        },
+        'card': {
+          'type': 'Simple',
+          'title': 'Smart Social',
+          'content': 'It must be time to dance.'
+        },
+        'reprompt': {
+          'outputSpeech': {
+            'type': 'PlainText',
+            'text': 'Can I help you with anything else?'
+          }
+        },
+        'shouldEndSession': false
+      }
+    });
 });
-
-app.get('/rest/:id', function(req, res){
-  db.find({ "rest": req.params.id}, function(err, docs){
-    res.json(docs);
-  });
-});
-
-// This file is maintained by a script running via a cronjob
-const averagesFileLocation = '/home/time/diningin-time-tracker/averages.json';
-
-app.get('/averages', function(req, res){
-	var averages = JSON.parse(fs.readFileSync(averagesFileLocation, 'utf8'));
-	res.json(averages);
-});
-
-app.get('/averages/:id', function(req, res){
-  var id = parseInt(req.params.id);
-  var averages = JSON.parse(fs.readFileSync(averagesFileLocation, 'utf8'));
-  if (averages[id]){
-    res.send(averages[id]);
-  } else {
-    res.status(500).send();
-  }
-});
-
 // For local testing only
 /*
 const port = 3000;

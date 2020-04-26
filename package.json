@@ -4,10 +4,12 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "alexa-sdk": "^1.0.6",
     "body-parser": "^1.15.1",
     "cors": "^2.7.1",
     "express": "^4.13.4",
     "lodash": "^4.12.0",
+    "morgan": "^1.7.0",
     "nedb": "^1.8.0"
   },
   "devDependencies": {},
