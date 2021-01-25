@@ -70,19 +70,44 @@ app.get('/rest/:id', function(req, res){
   });
 });
 
-// This file is maintained by a script running via a cronjob
+
+// This file was once maintained by a script running via a cronjob
+// This file is no longer updated, and should be removed once enough users
+// have updated to the latest version of diningin-tweaks extension
 const averagesFileLocation = '/home/time/diningin-time-tracker/averages.json';
 
+// Deprecated, use /delivery_times
 app.get('/averages', function(req, res){
 	var averages = JSON.parse(fs.readFileSync(averagesFileLocation, 'utf8'));
 	res.json(averages);
 });
 
+// Deprecated, use /delivery_times
 app.get('/averages/:id', function(req, res){
   var id = parseInt(req.params.id);
   var averages = JSON.parse(fs.readFileSync(averagesFileLocation, 'utf8'));
   if (averages[id]){
     res.send(averages[id]);
+  } else {
+    res.status(500).send();
+  }
+});
+
+// This file is maintained by a python script in the same location as the output file
+// This script is run weekly via a cronjob
+// const deliveryTimesFileLocation = '/home/time/diningin-time-tracker/delivery_times.json'
+const deliveryTimesFileLocation = '/Users/duncansteenburgh/Documents/diningin-time-tracker/delivery_times.json';
+
+app.get('/delivery_times', function(req, res){
+  var times = JSON.parse(fs.readFileSync(deliveryTimesFileLocation, 'utf8'));
+  res.json(times);
+});
+
+app.get('/delivery_times/:id', function(req, res){
+  var id = parseInt(req.params.id);
+  var times = JSON.parse(fs.readFileSync(deliveryTimesFileLocation, 'utf8'));
+  if (times[id]){
+    res.send(times[id]);
   } else {
     res.status(500).send();
   }
